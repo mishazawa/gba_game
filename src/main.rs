@@ -16,7 +16,7 @@
 extern crate alloc;
 
 use agb::display::object::Object;
-use agb::fixnum::{Vector2D, vec2};
+use agb::fixnum::{Rect, Vector2D, rect, vec2};
 use agb::include_aseprite;
 use agb::input::Button;
 
@@ -34,6 +34,15 @@ struct Paddle {
 impl Paddle {
     fn new(x: i32, y: i32) -> Self {
         Self { pos: vec2(x, y) }
+    }
+
+    fn collision_rect(&self) -> Rect<i32> {
+        rect(self.pos, vec2(16, 16 * 3))
+    }
+
+    fn set_y(&mut self, y: i32) {
+        self.pos.y = y;
+        self.move_by(0, false);
     }
 
     fn move_by(&mut self, y: i32, boost: bool) {
@@ -69,8 +78,18 @@ impl Ball {
         Self { pos, vel }
     }
 
-    fn update(&mut self) {
-        self.pos += self.vel;
+    fn update(&mut self, a: Rect<i32>, b: Rect<i32>) {
+        let next_pos = self.pos + self.vel;
+
+        let ball_rect = rect(next_pos, vec2(16, 16));
+
+        if a.touches(ball_rect) {
+            self.vel.x = 1;
+        }
+
+        if b.touches(ball_rect) {
+            self.vel.x = -1;
+        }
 
         if self.pos.x == 0 || self.pos.x == (agb::display::WIDTH - 16) {
             self.vel.x *= -1;
@@ -79,6 +98,8 @@ impl Ball {
         if self.pos.y == 0 || self.pos.y == (agb::display::HEIGHT - 16) {
             self.vel.y *= -1;
         };
+
+        self.pos += self.vel;
     }
 
     fn show(&self, frame: &mut agb::display::GraphicsFrame) {
@@ -107,7 +128,9 @@ fn main(mut gba: agb::Gba) -> ! {
             button_controller.is_pressed(Button::A),
         );
 
-        ball.update();
+        ball.update(paddle_a.collision_rect(), paddle_b.collision_rect());
+
+        paddle_b.set_y(ball.pos.y);
 
         let mut frame = gfx.frame();
 
