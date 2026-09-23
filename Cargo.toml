@@ -1,5 +1,5 @@
 [package]
-name = "agb_template"
+name = "my_game"
 version = "0.1.0"
 authors = [""]
 edition = "2024"

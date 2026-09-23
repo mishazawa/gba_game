@@ -1,1 +1,8 @@
 target
+
+.DS_Store
+*.sav
+*.gba
+
+.aider*
+.env

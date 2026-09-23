@@ -15,8 +15,10 @@
 // until you declare the extern crate. `agb` provides an allocator so it will all work
 extern crate alloc;
 
-// The main function must take 1 arguments and never returns, and must be marked with
-// the #[agb::entry] macro.
+/*
+The main function must take 1 arguments and never returns, and must be marked with
+the #[agb::entry] macro.
+*/
 #[agb::entry]
 fn main(gba: agb::Gba) -> ! {
     agb::no_game(gba);

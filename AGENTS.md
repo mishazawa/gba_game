@@ -1,0 +1,23 @@
+When writing code, you MUST follow these principles:
+
+- Code should be easy to read and understand.
+- Keep the code as simple as possible. Avoid unnecessary complexity.
+- Use meaningful names for variables, functions, and types. Names should reveal intent.
+- Functions should be small and do one thing well.
+- Function names should describe the action being performed.
+- Prefer fewer arguments in functions. Group related data into a struct instead of passing many args.
+- Only use comments when necessary. Prefer self-explanatory code.
+- When comments are used, they should explain _why_, not _what_.
+- Use `Result` and `Option` for error handling. Avoid `unwrap`/`expect` outside of early prototyping — a panic on real hardware just freezes the game.
+- Keep `unsafe` blocks as small and rare as possible. Comment why each one is needed.
+- Prefer immutable data by default. Use mutation only where the game loop genuinely needs it (entity/game state).
+- Use enums and pattern matching for game states instead of bools/flags.
+- Avoid heap allocation in the per-frame hot path — GBA RAM is very limited.
+- Use fixed-point math (e.g. agb's `Number` type) instead of `f32`/`f64` — the GBA has no hardware float support.
+- Prefer structs + traits over inheritance-style OOP (not idiomatic in Rust anyway).
+- `no_std` environment — no OS, no threads, no heap unless `agb`'s allocator is set up. Use `core`/`alloc` only, not `std`.
+- Avoid recursion — no stack overflow protection on embedded hardware.
+- Sync the main loop to VBlank (`agb::interrupt::VBlank`). Never block longer than one frame.
+- Prefer fixed-size arrays over `Vec` where the size is known ahead of time.
+- Keep binary size small — ROM and RAM are tiny. Avoid heavy generics/monomorphization and large dependencies.
+- Keep interrupt handlers minimal and fast — no allocation, no long loops inside them.
