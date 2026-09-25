@@ -15,6 +15,8 @@
 // until you declare the extern crate. `agb` provides an allocator so it will all work
 extern crate alloc;
 
+use num_traits::Signed;
+
 use agb::display::{
     GraphicsFrame, Priority,
     object::Object,
@@ -44,6 +46,7 @@ static BALL_WALL_HIT: SoundData = include_wav!("sfx/wall-hit.wav");
 static BALL_WALL_FAIL: SoundData = include_wav!("sfx/fail.wav");
 
 type Fixed = Num<i32, 8>;
+
 enum SfxHit {
     Paddle,
     Wall,
@@ -110,8 +113,8 @@ impl Paddle {
     }
 
     fn set_y(&mut self, y: Fixed) {
-        self.pos.y = y;
-        self.move_by(0, false);
+        let diff: i32 = (y - self.pos.y).signum().to_raw();
+        self.move_by(diff, false);
     }
 
     fn move_by(&mut self, y: i32, boost: bool) {

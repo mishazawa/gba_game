@@ -9,6 +9,7 @@ edition = "2024"
 [dependencies]
 agb = "0.25.0"
 agb_tracker = "0.25.0"
+num-traits = { version = "0.2.19", default-features = false }
 
 [profile.dev]
 opt-level = 3
