@@ -14,16 +14,18 @@
 // By default no_std crates don't get alloc, so you won't be able to use things like Vec
 // until you declare the extern crate. `agb` provides an allocator so it will all work
 extern crate alloc;
-use agb::display::Priority;
-use agb::display::object::Object;
-use agb::display::tiled::{RegularBackground, RegularBackgroundSize, TileFormat};
+
+use agb::display::{
+    Priority,
+    object::Object,
+    tiled::{RegularBackground, RegularBackgroundSize, TileFormat},
+};
 use agb::fixnum::{Num, Rect, Vector2D, num, rect, vec2};
-use agb::include_aseprite;
-use agb::include_background_gfx;
 use agb::input::Button;
-use agb::sound::mixer::{Frequency, Mixer, SoundChannel};
-use agb::{include_wav, sound::mixer::SoundData};
+use agb::sound::mixer::{Frequency, Mixer, SoundChannel, SoundData};
+use agb::{include_aseprite, include_background_gfx, include_wav};
 use agb_tracker::{Track, Tracker, include_xm};
+
 include_background_gfx!(
     mod background,
     PLAY_FIELD => 256 deduplicate "gfx/background.aseprite",
